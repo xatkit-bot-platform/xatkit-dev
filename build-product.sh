@@ -31,6 +31,8 @@ mkdir -p $XATKIT_DEV/build/bin
 
 cd $XATKIT_DEV/src/xatkit
 
+echo "Pulling Xatkit"
+git pull
 echo "Building xatkit"
 mvn clean install -Pbuild-product $mvn_options
 mvn_result=$?
@@ -45,8 +47,12 @@ fi
 for platform in "${embedded_platforms[@]}"
 do
 	project_name="$platform-platform"
-	echo "Building $project_name"
+
 	cd $XATKIT_DEV/src/platforms/$project_name
+	echo "Pulling $project_name"
+	git pull
+
+	echo "Building $project_name"
 	mvn clean install -Pbuild-product $mvn_options
 	mvn_result=$?
 	if [ $mvn_result == 0 ]
