@@ -1,5 +1,16 @@
 #!/bin/bash
 
+mvn_options=""
+
+for arg in "$@"
+do
+	shift
+	case "$arg" in
+		"--skip-tests") 	mvn_options="$mvn_options -DskipTests" ;;
+		*) 					echo "Unknown argument $arg"; exit 1
+	esac
+done
+
 embedded_platforms=(core xatkit-chat slack discord react giphy github log)
 
 if [ ! -d $XATKIT_DEV ]
@@ -21,7 +32,7 @@ mkdir -p $XATKIT_DEV/build/bin
 cd $XATKIT_DEV/src/xatkit
 
 echo "Building xatkit"
-mvn clean install -Pbuild-product
+mvn clean install -Pbuild-product $mvn_options
 mvn_result=$?
 if [ $mvn_result == 0 ]
 then
@@ -36,7 +47,7 @@ do
 	project_name="$platform-platform"
 	echo "Building $project_name"
 	cd $XATKIT_DEV/src/platforms/$project_name
-	mvn clean install -Pbuild-product
+	mvn clean install -Pbuild-product $mvn_options
 	mvn_result=$?
 	if [ $mvn_result == 0 ]
 	then
