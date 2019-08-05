@@ -3,11 +3,13 @@
 embedded_platforms=(core xatkit-chat slack discord react giphy github log)
 xatkit_org=https://github.com/xatkit-bot-platform
 
-if [ ! -d $XATKIT_DEV ]
+if [ -z "$XATKIT_DEV" ]
 then
 	echo "XATKIT_DEV environment variable not set, please run the install script"
 	exit 1
 fi
+
+echo "Initializing Xatkit development environment at $XATKIT_DEV"
 
 cd $XATKIT_DEV
 
