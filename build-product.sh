@@ -11,8 +11,6 @@ do
 	esac
 done
 
-embedded_platforms=(core xatkit-chat slack discord react giphy github log)
-
 if [ ! -d $XATKIT_DEV ]
 then
 	echo "XATKIT_DEV environment variable not set, please run the install script"
@@ -42,29 +40,34 @@ then
 	cp core/target/xatkit-nodep-jar-with-dependencies.jar $XATKIT_DEV/build/bin
 else
 	echo "An error occured when building xatkit, see the maven build log"
+	exit 1
 fi
 
-for platform in "${embedded_platforms[@]}"
-do
-	project_name="$platform-platform"
+cd $XATKIT_DEV/src/platforms
 
-	cd $XATKIT_DEV/src/platforms/$project_name
-	echo "Pulling $project_name"
+embedded_platforms=$(ls -d */)
+
+for platform in $embedded_platforms
+do
+	platform_name=${platform%"-platform/"}
+
+	cd $XATKIT_DEV/src/platforms/$platform
+	echo "Pulling $platform"
 	git pull
 
-	echo "Building $project_name"
+	echo "Building $platform"
 	mvn clean install -Pbuild-product $mvn_options
 	mvn_result=$?
 	if [ $mvn_result == 0 ]
 	then
 		echo "Copying created artifacts"
-		mkdir $XATKIT_DEV/build/plugins/platforms/$platform
-		cp runtime/target/$platform-runtime.jar $XATKIT_DEV/build/plugins/platforms/$platform
-		cp platform/target/$platform-platform.zip $XATKIT_DEV/build/plugins/platforms/$platform
-		unzip $XATKIT_DEV/build/plugins/platforms/$platform/$platform-platform.zip -d $XATKIT_DEV/build/plugins/platforms/$platform
-		rm $XATKIT_DEV/build/plugins/platforms/$platform/$platform-platform.zip
+		mkdir $XATKIT_DEV/build/plugins/platforms/$platform_name
+		cp runtime/target/$platform_name-runtime.jar $XATKIT_DEV/build/plugins/platforms/$platform_name
+		cp platform/target/$platform_name-platform.zip $XATKIT_DEV/build/plugins/platforms/$platform_name
+		unzip $XATKIT_DEV/build/plugins/platforms/$platform_name/$platform_name-platform.zip -d $XATKIT_DEV/build/plugins/platforms/$platform_name
+		rm $XATKIT_DEV/build/plugins/platforms/$platform_name/$platform_name-platform.zip
 	else
-		echo "An error occurred when building $project_name, see the build log"
+		echo "An error occurred when building $platform, see the maven build log"
 		exit 1
 	fi
 done
