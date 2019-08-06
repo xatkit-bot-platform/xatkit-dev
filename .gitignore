@@ -2,3 +2,4 @@ build/
 src/xatkit/
 src/platforms/
 update-site/
+*.log

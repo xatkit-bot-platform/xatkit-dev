@@ -78,7 +78,7 @@ fi
 
 cd $XATKIT_DEV/src/platforms
 
-embedded_platforms=$(ls -d */)
+embedded_platforms=$(ls -d */ | tac)
 
 for platform in $embedded_platforms
 do
