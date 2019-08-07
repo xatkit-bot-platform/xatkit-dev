@@ -19,7 +19,6 @@ then
 	exit 1
 fi
 
-
 cd $XATKIT_DEV/src
 
 echo "Cloning Xatkit"
@@ -28,6 +27,21 @@ git clone $xatkit_org/xatkit.git
 if [ $? -ne 0 ]
 then
 	echo "Cannot clone $xatkit_org/xatkit.git"
+	exit 1
+fi
+
+if [ -d $XATKIT_DEV/src/xatkit-eclipse ]
+then
+	echo "Cannot initialize Xatkit development toolkit, there are already a xatkit directory in your development environment ($XATKIT/src/xatkit-eclipse)"
+	exit 1
+fi
+
+echo "Cloning Xatkit Eclipse Plugins"
+git clone $xatkit_org/xatkit-eclipse.git
+
+if [ $? -ne 0 ]
+then
+	echo "Cannot clone $xatkit_org/xatkit-eclipse.git"
 	exit 1
 fi
 

@@ -87,7 +87,9 @@ then
 
 	mkdir -p $XATKIT_DEV/update-site
 
-	cd $XATKIT_DEV/src/xatkit/eclipse
+	cd $XATKIT_DEV/src/xatkit-eclipse
+	echo "Pulling Xatkit Eclipse Plugins"
+	git pull
 	echo "Building Xatkit Eclipse Plugins"
 	mvn clean install $mvn_options
 	mvn_result=$?
