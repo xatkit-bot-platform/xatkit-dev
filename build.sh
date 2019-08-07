@@ -59,11 +59,11 @@ then
 	mkdir -p $XATKIT_DEV/build/bin
 fi
 
-cd $XATKIT_DEV/src/xatkit
+cd $XATKIT_DEV/src/xatkit-runtime
 
-echo "Pulling Xatkit"
+echo "Pulling Xatkit Runtime"
 git pull
-echo "Building Xatkit"
+echo "Building Xatkit Runtime"
 mvn clean install $mvn_options
 mvn_result=$?
 if [ $mvn_result == 0 ]

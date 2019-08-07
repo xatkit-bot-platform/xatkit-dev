@@ -1,5 +1,5 @@
 build/
-src/xatkit/
+src/xatkit-runtime/
 src/xatkit-eclipse/
 src/platforms/
 update-site/

@@ -13,16 +13,16 @@ echo "Initializing Xatkit development environment at $XATKIT_DEV"
 
 cd $XATKIT_DEV
 
-if [ -d $XATKIT_DEV/src/xatkit ]
+if [ -d $XATKIT_DEV/src/xatkit-runtime ]
 then
-	echo "Cannot initialize Xatkit development toolkit, there are already a xatkit directory in your development environment ($XATKIT/src/xatkit)"
+	echo "Cannot initialize Xatkit development toolkit, there are already a xatkit-runtime directory in your development environment ($XATKIT/src/xatkit-runtime)"
 	exit 1
 fi
 
 cd $XATKIT_DEV/src
 
 echo "Cloning Xatkit"
-git clone $xatkit_org/xatkit.git
+git clone $xatkit_org/xatkit-runtime.git
 
 if [ $? -ne 0 ]
 then
@@ -32,7 +32,7 @@ fi
 
 if [ -d $XATKIT_DEV/src/xatkit-eclipse ]
 then
-	echo "Cannot initialize Xatkit development toolkit, there are already a xatkit directory in your development environment ($XATKIT/src/xatkit-eclipse)"
+	echo "Cannot initialize Xatkit development toolkit, there are already a xatkit-eclipse directory in your development environment ($XATKIT/src/xatkit-eclipse)"
 	exit 1
 fi
 
