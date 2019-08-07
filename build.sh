@@ -4,6 +4,31 @@ mvn_options=""
 build_product=false
 build_eclipse=false
 
+build_platform() {
+	platform=$1
+	platform_name=$2
+	cd $XATKIT_DEV/src/platforms/$platform
+	echo "Pulling $platform"
+	git pull
+
+	echo "Building $platform"
+	mvn clean install $mvn_options
+	mvn_result=$?
+	if [ $mvn_result == 0 ]
+	then
+		if [ $build_product = true ]
+		then
+			echo "Copying created artifacts"
+			mkdir $XATKIT_DEV/build/plugins/platforms/$platform_name
+			cp runtime/target/$platform_name-runtime*.jar $XATKIT_DEV/build/plugins/platforms/$platform_name
+			unzip platform/target/$platform_name-platform*.zip -d $XATKIT_DEV/build/plugins/platforms/$platform_name
+		fi
+	else
+		echo "An error occurred when building $platform, see the maven build log"
+		exit 1
+	fi
+}
+
 for arg in "$@"
 do
 	shift
@@ -78,34 +103,33 @@ fi
 
 cd $XATKIT_DEV/src/platforms
 
-embedded_platforms=$(ls -d */ | tac)
+abstract_platforms=$(find -name '.abstract' -printf '%h\n' | sed -r 's|/[^/]+$||' | xargs basename)
+
+echo "Building abstract platforms:"
+printf '\t%s/\n' ${abstract_platforms[@]}
+
+for platform in $abstract_platforms
+do
+	platform_name=${platform%"-platform"}
+	build_platform $platform $platform_name
+done
+
+cd $XATKIT_DEV/src/platforms
+
+embedded_platforms=$(ls -d */)
+
+for i in "${abstract_platforms[@]}"
+do
+	embedded_platforms=${embedded_platforms[@]//"$i/"}
+done
+
+echo "Building concrete platforms:"
+printf '\t%s\n' ${embedded_platforms[@]}
 
 for platform in $embedded_platforms
 do
 	platform_name=${platform%"-platform/"}
-
-	cd $XATKIT_DEV/src/platforms/$platform
-	echo "Pulling $platform"
-	git pull
-
-	echo "Building $platform"
-	mvn clean install $mvn_options
-	mvn_result=$?
-	if [ $mvn_result == 0 ]
-	then
-		if [ $build_product = true ]
-		then
-			echo "Copying created artifacts"
-			mkdir $XATKIT_DEV/build/plugins/platforms/$platform_name
-			cp runtime/target/$platform_name-runtime.jar $XATKIT_DEV/build/plugins/platforms/$platform_name
-			cp platform/target/$platform_name-platform.zip $XATKIT_DEV/build/plugins/platforms/$platform_name
-			unzip $XATKIT_DEV/build/plugins/platforms/$platform_name/$platform_name-platform.zip -d $XATKIT_DEV/build/plugins/platforms/$platform_name
-			rm $XATKIT_DEV/build/plugins/platforms/$platform_name/$platform_name-platform.zip
-		fi
-	else
-		echo "An error occurred when building $platform, see the maven build log"
-		exit 1
-	fi
+	build_platform $platform $platform_name
 done
 
 if [ $build_product = true ]
