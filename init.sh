@@ -1,6 +1,6 @@
 #!/bin/bash
 
-embedded_platforms=(core xatkit-chat slack discord react giphy github log)
+embedded_platforms=(xatkit-core xatkit-chat xatkit-slack xatkit-discord xatkit-react xatkit-giphy xatkit-github xatkit-log)
 xatkit_org=https://github.com/xatkit-bot-platform
 
 if [ -z "$XATKIT_DEV" ]
