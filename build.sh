@@ -1,12 +1,40 @@
 #!/bin/bash
 
-mvn_options=""
-build_product=false
-build_eclipse=false
+# Usage
+#
+# ./build.sh [options]
+#
+# Description
+#
+# Build xatkit components and platforms. Generated maven artifacts are installed in ~/.m2, and bundled in a shippable product 
+# stored in /build if the --product option is specified.
+#
+# Options
+#
+# --runtime: 			pull and build xatkit-runtime (the xatkit execution engine)
+# --eclipse: 			pull and build xatkit-eclipse (the language editors and eclipse integration plugins). If --product is   
+# 			 			specified a zipped update-site is created in /update-site
+# --platforms: 			pull and build all the platforms listed in /src/platforms
+# --platform=<name>: 	pull and build the platform `name`. Note: `name` must be an existing directory in /src/platforms
+# --product:			bundle the generated artifacts into a shippable product in /build. If --eclipse is specified a
+#						zipped update-site is created in /update-site
+# --skip-tests:			skip the build tests (equivalent to -DskipTests parameter for maven)
+#
+# Examples
+#
+# ./build.sh --runtime --eclipse --platforms --product --skip-tests: pull and build xatkit-runtime, xatkit-eclipse, and all the
+# 																	 platforms listed in src/platforms and bundle them in /build
+# ./build.sh --platform=xatkit-chat-platform --product: 			 pull and build xatkit-chat platform and install it in /build
+#																	 (other artifacts in /build are not updated)
+# ./build.sh --runtime --product:									 pull and build xatkit-runtime and install it in /build (other
+#																	 artifacts in build/ are not updated)
 
+
+# Build the provided platform and install it if --product is specified
+# param $1: the name of the directory containing the platform to build (e.g. xatkit-chat-platform)
 build_platform() {
 	platform=$1
-	platform_name=$2
+	platform_name=${platform%"-platform"}
 	cd $XATKIT_DEV/src/platforms/$platform
 	echo "Pulling $platform"
 	git pull
@@ -14,31 +42,23 @@ build_platform() {
 	echo "Building $platform"
 	mvn clean install $mvn_options
 	mvn_result=$?
-	if [ $mvn_result == 0 ]
+	if [ $build_product = true ]
 	then
-		if [ $build_product = true ]
-		then
-			echo "Copying created artifacts"
-			mkdir $XATKIT_DEV/build/plugins/platforms/$platform_name
-			cp runtime/target/$platform_name-runtime*.jar $XATKIT_DEV/build/plugins/platforms/$platform_name
-			unzip platform/target/$platform_name-platform*.zip -d $XATKIT_DEV/build/plugins/platforms/$platform_name
-		fi
-	else
-		echo "An error occurred when building $platform, see the maven build log"
-		exit 1
+		echo "Copying created artifacts"
+		# The directory has been deleted in the clean phase
+		mkdir $XATKIT_DEV/build/plugins/platforms/$platform
+		cp runtime/target/$platform_name-runtime*.jar $XATKIT_DEV/build/plugins/platforms/$platform
+		unzip platform/target/$platform_name-platform*.zip -d $XATKIT_DEV/build/plugins/platforms/$platform
 	fi
 }
 
-for arg in "$@"
-do
-	shift
-	case "$arg" in
-		"--skip-tests") 	mvn_options="$mvn_options -DskipTests" ;;
-		"--product")		mvn_options="$mvn_options -Pbuild-product"; build_product=true ;;
-		"--eclipse")		build_eclipse=true;;
-		*) 					echo "Unknown argument $arg"; exit 1
-	esac
-done
+# Returns 0 if $2 contains $1, 1 otherwise
+containsElement () {
+  local e match="$1"
+  shift
+  for e; do [[ "$e" == "$match" ]] && return 0; done
+  return 1
+}
 
 if [ ! -d $XATKIT_DEV ]
 then
@@ -48,90 +68,123 @@ fi
 
 cd $XATKIT_DEV
 
+mvn_options=""
+build_runtime=false
+build_product=false
+build_eclipse=false
+all_platforms=$(ls -d src/platforms/* | xargs -n 1 basename)
+platforms_to_build=()
+
+for arg in "$@"
+do
+	shift
+	case "$arg" in
+		"--runtime")		build_runtime=true;;
+		"--eclipse")		build_eclipse=true;;
+		"--platforms")		platforms_to_build=$all_platforms;;
+		"--platform="*)		platform=${arg#*=}
+							containsElement $platform ${all_platforms[@]}
+							if [ $? == 0 ]
+							then
+								platforms_to_build=$platform
+							else
+								echo "Cannot build platform $platform, the directory src/platforms/$platform doesn't exist"
+								exit 1
+							fi;;
+		"--skip-tests") 	mvn_options="$mvn_options -DskipTests" ;;
+		"--product")		mvn_options="$mvn_options -Pbuild-product"; build_product=true ;;
+		*) 					echo "Unknown argument $arg"; exit 1
+	esac
+done
+
+cd $XATKIT_DEV
+
+# Cleaning the build/ folder
 if [ $build_product = true ]
 then
-	if [ -d $XATKIT_DEV/build ]
+	for platform in $platforms_to_build
+	do
+		echo "Cleaning $platform"
+		rm -rf $XATKIT_DEV/build/plugins/platforms/$platform
+	done
+	if [ $build_runtime = true ]
 	then
-		rm -rf $XATKIT_DEV/build
+		echo "Cleaning Runtime"
+		rm $XATKIT_DEV/build/bin/xatkit-nodep-jar-with-dependencies.jar
 	fi
-
-	mkdir -p $XATKIT_DEV/build/plugins/platforms
-	mkdir -p $XATKIT_DEV/build/bin
+	if [ $build_eclipse = true ]
+	then
+		echo "Cleaning Update site"
+		rm -rf $XATKIT_DEV/update-site
+		mkdir $XATKIT_DEV/update-site
+	fi
+else
+	echo "--product not set, nothing to clean"
 fi
 
-cd $XATKIT_DEV/src/xatkit-runtime
+cd $XATKIT_DEV
 
-echo "Pulling Xatkit Runtime"
-git pull
-echo "Building Xatkit Runtime"
-mvn clean install $mvn_options
-mvn_result=$?
-if [ $mvn_result == 0 ]
+
+if [ $build_runtime = true ]
 then
+	cd $XATKIT_DEV/src/xatkit-runtime
+
+	echo "Pulling Xatkit Runtime"
+	git pull
+	echo "Building Xatkit Runtime"
+	mvn clean install $mvn_options
 	if [ $build_product = true ]
 	then
 		echo "Copying created artifacts"
 		cp core/target/xatkit-nodep-jar-with-dependencies.jar $XATKIT_DEV/build/bin
 	fi
 else
-	echo "An error occurred when building xatkit, see the maven build log"
-	exit 1
+	echo "Skipping Runtime build"
 fi
 
 if [ $build_eclipse = true ]
 then
-	if [ -d $XATKIT_DEV/update-site ]
-	then
-		rm -rf $XATKIT_DEV/update-site
-	fi
-
-	mkdir -p $XATKIT_DEV/update-site
-
 	cd $XATKIT_DEV/src/xatkit-eclipse
 	echo "Pulling Xatkit Eclipse Plugins"
 	git pull
 	echo "Building Xatkit Eclipse Plugins"
 	mvn clean install $mvn_options
-	mvn_result=$?
-	if [ $mvn_result == 0 ]
+	if [ $build_product = true ]
 	then
 		echo "Copying update site"
 		cp update/com.xatkit.update/target/com.xatkit.update-2.0.0-SNAPSHOT.zip $XATKIT_DEV/update-site
-	else
-		echo "An error occurred wen building Xatkit Eclipse Plugins, see the maven build log"
-		exit 1
 	fi
 fi
 
 cd $XATKIT_DEV/src/platforms
 
+echo "Building Xatkit platforms:"
+printf '\t%s\n' ${platforms_to_build[@]}
+
 abstract_platforms=$(find -name '.abstract' -printf '%h\n' | sed -r 's|/[^/]+$||' | xargs basename)
 
-echo "Building abstract platforms:"
-printf '\t%s/\n' ${abstract_platforms[@]}
-
-for platform in $abstract_platforms
+for abstract_platform in $abstract_platforms
 do
-	platform_name=${platform%"-platform"}
-	build_platform $platform $platform_name
+	containsElement "$abstract_platform" ${platforms_to_build[@]}
+	if [ $? == 0 ]
+	then
+		echo "Building abstract platform $abstract_platform"
+		build_platform $abstract_platform
+	fi
 done
 
 cd $XATKIT_DEV/src/platforms
-
-embedded_platforms=$(ls -d */)
+concrete_platforms=$platforms_to_build
 
 for i in "${abstract_platforms[@]}"
 do
-	embedded_platforms=${embedded_platforms[@]//"$i/"}
+	concrete_platforms=${concrete_platforms[@]//"$i"}
 done
 
-echo "Building concrete platforms:"
-printf '\t%s\n' ${embedded_platforms[@]}
-
-for platform in $embedded_platforms
+for concrete_platform in $concrete_platforms
 do
-	platform_name=${platform%"-platform/"}
-	build_platform $platform $platform_name
+	echo "Building concrete platform $concrete_platform"
+	build_platform $concrete_platform
 done
 
 if [ $build_product = true ]
