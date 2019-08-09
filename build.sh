@@ -19,6 +19,7 @@
 # --product:			bundle the generated artifacts into a shippable product in /build. If --eclipse is specified a
 #						zipped update-site is created in /update-site
 # --skip-tests:			skip the build tests (equivalent to -DskipTests parameter for maven)
+# --skip-mvn:			skip maven build. This can be combined with --product to refresh the content of the build/ directory
 #
 # Examples
 #
@@ -40,13 +41,16 @@ build_platform() {
 	git pull
 
 	echo "Building $platform"
-	mvn clean install $mvn_options
+	if [ $skip_mvn = false ]
+	then
+		mvn clean install $mvn_options
+	fi
 	mvn_result=$?
 	if [ $build_product = true ]
 	then
 		echo "Copying created artifacts"
 		# The directory has been deleted in the clean phase
-		mkdir $XATKIT_DEV/build/plugins/platforms/$platform
+		mkdir -p $XATKIT_DEV/build/plugins/platforms/$platform
 		cp runtime/target/$platform_name-runtime*.jar $XATKIT_DEV/build/plugins/platforms/$platform
 		unzip platform/target/$platform_name-platform*.zip -d $XATKIT_DEV/build/plugins/platforms/$platform
 	fi
@@ -72,6 +76,7 @@ mvn_options=""
 build_runtime=false
 build_product=false
 build_eclipse=false
+skip_mvn=false
 all_platforms=$(ls -d src/platforms/* | xargs -n 1 basename)
 platforms_to_build=()
 
@@ -92,6 +97,7 @@ do
 								exit 1
 							fi;;
 		"--skip-tests") 	mvn_options="$mvn_options -DskipTests" ;;
+		"--skip-mvn")		skip_mvn=true ;;
 		"--product")		mvn_options="$mvn_options -Pbuild-product"; build_product=true ;;
 		*) 					echo "Unknown argument $arg"; exit 1
 	esac
@@ -118,6 +124,9 @@ then
 		rm -rf $XATKIT_DEV/update-site
 		mkdir $XATKIT_DEV/update-site
 	fi
+	mkdir -p $XATKIT_DEV/build
+	mkdir -p $XATKIT_DEV/build/plugins/platforms
+	mkdir -p $XATKIT_DEV/build/bin
 else
 	echo "--product not set, nothing to clean"
 fi
@@ -132,11 +141,14 @@ then
 	echo "Pulling Xatkit Runtime"
 	git pull
 	echo "Building Xatkit Runtime"
-	mvn clean install $mvn_options
+	if [ $skip_mvn = false ]
+	then
+		mvn clean install $mvn_options
+	fi
 	if [ $build_product = true ]
 	then
 		echo "Copying created artifacts"
-		cp core/target/xatkit-nodep-jar-with-dependencies.jar $XATKIT_DEV/build/bin
+		cp core/target/xatkit-nodep-jar-with-dependencies.jar $XATKIT_DEV/build/bin/
 	fi
 else
 	echo "Skipping Runtime build"
@@ -148,11 +160,14 @@ then
 	echo "Pulling Xatkit Eclipse Plugins"
 	git pull
 	echo "Building Xatkit Eclipse Plugins"
-	mvn clean install $mvn_options
+	if [ $skip_mvn = false ]
+	then
+		mvn clean install $mvn_options
+	fi
 	if [ $build_product = true ]
 	then
 		echo "Copying update site"
-		cp update/com.xatkit.update/target/com.xatkit.update-2.0.0-SNAPSHOT.zip $XATKIT_DEV/update-site
+		cp update/com.xatkit.update/target/com.xatkit.update-2.0.0-SNAPSHOT.zip $XATKIT_DEV/update-site/
 	fi
 fi
 
@@ -194,13 +209,13 @@ then
 	for script in $scripts
 	do
 		echo "Copying $script"
-		cp $script $XATKIT_DEV/build
+		cp $script $XATKIT_DEV/build/
 	done
 
 	bin_scripts=$(find $XATKIT_DEV/src/scripts/bin -follow -maxdepth 1 \( -name '*.sh' -o -name '*.bat' \))
 	for script in $bin_scripts
 	do
 		echo "Copying $script"
-		cp $script $XATKIT_DEV/build/bin
+		cp $script $XATKIT_DEV/build/bin/
 	done
 fi
