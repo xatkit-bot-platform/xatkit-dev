@@ -79,7 +79,7 @@ The `build.sh` command provides several options that allows to build part of Xat
 
 >Rebuilding a single platform can be done with `./build.sh --platform=<platform directory name> --product`. Your `xatkit-dev/build` directory will be updated with the latest version of the built platform.
 
-This command creates two directories:
+After a few minutes, this command creates two directories:
 
 - `xatkit-dev/build`: contains the built artifacts (if `--product` has been specified)
 - `xatkit-dev/update-site`: contains a zipped update-site that can be used to install the Xatkit editors in Eclipse (if `--eclipse` has been specified)
