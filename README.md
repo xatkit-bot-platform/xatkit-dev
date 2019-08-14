@@ -40,7 +40,7 @@ export XATKIT_DEV=<path to xatkit-dev directory>
 
 *Note*: the path to `xatkit-dev` directory should not contain a trailing `/`.
 
-4- (*Optional*) Check your environment variables
+(*Optional*) Check your environment variables
 
 **Windows**
 
