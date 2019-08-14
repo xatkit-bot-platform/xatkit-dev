@@ -218,4 +218,6 @@ then
 		echo "Copying $script"
 		cp $script $XATKIT_DEV/build/bin/
 	done
+	echo "Copying Xatkit Examples"
+	cp -r $XATKIT_DEV/src/xatkit-examples $XATKIT_DEV/build/examples
 fi

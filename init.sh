@@ -51,6 +51,15 @@ then
 	exit 1
 fi
 
+echo "Cloning Xatkit Examples"
+git clone $xatkit_org/xatkit-examples
+
+if [ $? -ne 0 ]
+then
+	echo "Cannot clone $xatkit_org/xatkit-examples"
+	exit 1
+fi
+
 mkdir -p $XATKIT_DEV/src/platforms
 
 cd $XATKIT_DEV/src/platforms
