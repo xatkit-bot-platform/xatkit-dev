@@ -46,7 +46,7 @@ export XATKIT_DEV=<path to xatkit-dev directory>
 
 Open your bash interpreter and check that `echo $XATKIT_DEV` prints the path of the `xatkit-dev` directory. If the printed value is empty you need to close your interpreter and open it again, the newly created environment variables will be reloaded.
 
-3- Clone the Xatkit repositories
+3- Navigate to the xatkit-dev folder and clone the Xatkit repositories
 
 ```bash
 ./init.sh
