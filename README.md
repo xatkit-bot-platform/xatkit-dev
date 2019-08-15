@@ -28,23 +28,15 @@ git clone https://github.com/xatkit-dev.git
 
 **Windows**
 
-Execute `xatkit-dev/install.bat` with administrative rights.
+Execute `xatkit-dev/install-windows.bat` with administrative rights.
 
 **Ubuntu**
 
-Run the following command
+Execute `xatkit-dev/install-linux.sh`
 
-```bash
-export XATKIT_DEV=<path to xatkit-dev directory>
-```
+*XDK Tip: check your environment variables on Windows*
 
-*Note*: the path to `xatkit-dev` directory should not contain a trailing `/`.
-
-(*Optional*) Check your environment variables
-
-**Windows**
-
-Open your bash interpreter and check that `echo $XATKIT_DEV` prints the path of the `xatkit-dev` directory. If the printed value is empty you need to close your interpreter and open it again, the newly created environment variables will be reloaded.
+> Open your bash interpreter and check that `echo $XATKIT_DEV` prints the path of the `xatkit-dev` directory. If the printed value is empty you need to close your interpreter and open it again, the newly created environment variables will be reloaded.
 
 3- Navigate to the xatkit-dev folder and clone the Xatkit repositories
 
@@ -75,7 +67,7 @@ The `build.sh` command provides several options that allows to build part of Xat
 - `--skip-tests`: skip the test execution (similar to maven's `-DskipTests`)
 - `--product`: create a *product* version of the bundled artifacts. This option installs the built platforms in `xatkit-dev/build/plugins`, allowing the runtime component to use them. Installed platforms can also be imported in the Eclipse editors.
 
-*XDK Tip*
+*XDK Tip: rebuild single platforms*
 
 >Rebuilding a single platform can be done with `./build.sh --platform=<platform directory name> --product`. Your `xatkit-dev/build` directory will be updated with the latest version of the built platform.
 
