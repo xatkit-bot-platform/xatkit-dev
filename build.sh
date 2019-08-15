@@ -124,6 +124,8 @@ then
 		rm -rf $XATKIT_DEV/update-site
 		mkdir $XATKIT_DEV/update-site
 	fi
+	echo "Cleaning Xatkit Examples"
+	rm -rf $XATKIT_DEV/build/examples
 	mkdir -p $XATKIT_DEV/build
 	mkdir -p $XATKIT_DEV/build/plugins/platforms
 	mkdir -p $XATKIT_DEV/build/bin
@@ -218,7 +220,9 @@ then
 		echo "Copying $script"
 		cp $script $XATKIT_DEV/build/bin/
 	done
-	rm -rf $XATKIT_DEV/build/examples
+	echo "Pulling Xatkit Examples"
+	cd $XATKIT_DEV/src/xatkit-examples
+	git pull
 	echo "Copying Xatkit Examples"
 	cp -r $XATKIT_DEV/src/xatkit-examples $XATKIT_DEV/build/examples
 	rm -rf $XATKIT_DEV/build/examples/.git
