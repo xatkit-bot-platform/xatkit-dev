@@ -228,3 +228,5 @@ then
 	rm -rf $XATKIT_DEV/build/examples/.git
 	rm $XATKIT_DEV/build/examples/.gitignore
 fi
+
+cd $XATKIT_DEV
