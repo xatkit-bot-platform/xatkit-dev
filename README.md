@@ -94,7 +94,7 @@ Execute `install-linux.sh`.
 
 6- Install the update-site in Eclipse
 
-`Help > Install New Software > Add > Archive` and select the zipped update site located in `xatkit-dev/update-site`.
+Navigate to `Help > Install New Software > Add > Archive` and select the zipped update site located in `xatkit-dev/update-site`. The update site contains a single feature grouping the different language editors. Select it and press `Next`.
 
 ![Eclipse Install Dialog](https://raw.githubusercontent.com/wiki/xatkit-bot-platform/xatkit-dev/img/install-eclipse.png)
 
