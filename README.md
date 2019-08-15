@@ -98,3 +98,35 @@ Navigate to `Help > Install New Software > Add > Archive` and select the zipped 
 
 ![Eclipse Install Dialog](https://raw.githubusercontent.com/wiki/xatkit-bot-platform/xatkit-dev/img/install-eclipse.png)
 
+# Check the Installation
+
+Congratulations! You have now performed all the steps to build your own Xatkit development installation. You can test that everything is correctly setup by navigating to the `xatkit-dev/build/bin` directory and run the preset *GreetingsBot* example using the following command:
+
+**Windows**
+
+```bash
+./start-xatkit-windows.sh ../examples/GreetingsBot/GreetingsBot.properties
+```
+
+**Ubuntu**
+
+```bash
+./start-xatkit-linux.sh ../examples/GreetingsBot/GreetingsBot.properties
+```
+
+The console will log some initialization information, and after a few seconds you should see the following message:
+
+```bash
+You can test your chatbot here http://localhost:5000/admin (note that the bots behavior can be slightly different on the test page than when it is deployed on a server)
+```
+
+Open your browser and navigate to http://localhost:5000/admin to test your deployed chat bot!
+
+*XDK Tip: check the Greetings Bot definition*
+
+> The deployed bot is defined in `xatkit-dev/build/examples/GreetingsBot`. It contains basic intents and execution rules to test that the installation is working. You can check the [tutorial]() to learn how bots are defined with the Xatkit language, or if you are already familiar with it you can take a look at the [documentation]() for additional information on Xatkit capabilities.  Note that the Greetings Bot relies on regular expressions to process user inputs, you can take a look at [this tutorial article]() to empower your bots with advanced Natural Language Processing and Machine Learning intent extraction.
+
+![Greetings Bot Chatbox](https://raw.githubusercontent.com/wiki/xatkit-bot-platform/xatkit-dev/img/greetings-bot-chatbox-example.png)
+
+
+
