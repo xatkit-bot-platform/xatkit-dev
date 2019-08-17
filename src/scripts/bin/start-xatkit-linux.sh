@@ -18,6 +18,10 @@ for jar in $jars
 # Remove the leading ';'
 java_classpath="${java_classpath:1}"
 
-runthis "java -cp '$java_classpath' com.xatkit.Xatkit '$1'"
-
+if [ -z $1 ]
+then
+	runthis "java -cp '$java_classpath' com.xatkit.Xatkit"
+else
+	runthis "java -cp '$java_classpath' com.xatkit.Xatkit '$1'"
+fi
 
