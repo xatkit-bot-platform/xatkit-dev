@@ -124,7 +124,7 @@ Open your browser and navigate to http://localhost:5000/admin to test your deplo
 
 *XDK Tip: check the Greetings Bot definition*
 
-> The deployed bot is defined in `xatkit-dev/build/examples/GreetingsBot`. It contains basic intents and execution rules to test that the installation is working. You can check the [tutorial]() to learn how bots are defined with the Xatkit language, or if you are already familiar with it you can take a look at the [documentation](https://github.com/xatkit-bot-platform/xatkit-releases/wiki) for additional information on Xatkit capabilities.  Note that the Greetings Bot relies on regular expressions to process user inputs, you can take a look at [this tutorial article]() to empower your bots with advanced Natural Language Processing and Machine Learning intent extraction.
+> The deployed bot is defined in `xatkit-dev/build/examples/GreetingsBot`. It contains basic intents and execution rules to test that the installation is working. You can check the [tutorial](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Getting-Started) to learn how bots are defined with the Xatkit language, or if you are already familiar with it you can take a look at the [documentation](https://github.com/xatkit-bot-platform/xatkit-releases/wiki) for additional information on Xatkit capabilities.  
 
 ![Greetings Bot Chatbox](https://raw.githubusercontent.com/wiki/xatkit-bot-platform/xatkit-dev/img/greetings-bot-chatbox-example.png)
 
