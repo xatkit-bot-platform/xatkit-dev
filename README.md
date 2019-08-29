@@ -21,7 +21,7 @@ The XDK is also tested on *Ubuntu 18.04.2*, other Linux distributions are not of
 1- Clone this repository
 
 ```bash
-git clone https://github.com/xatkit-dev.git
+git clone https://github.com/xatkit-bot-platform/xatkit-dev.git
 ```
 
 2- Setup the environment variables
