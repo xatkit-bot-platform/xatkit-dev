@@ -1,4 +1,7 @@
 # Xatkit Development Toolkit
+
+[![Wiki Badge](https://img.shields.io/badge/doc-wiki-blue)](https://github.com/xatkit-bot-platform/xatkit-releases/wiki)
+
 The Xatkit Development Toolkit (XDK) aims to ease the installation and development of Xatkit core components, eclipse plugins, and platforms.
 
 # Requirements
