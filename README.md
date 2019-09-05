@@ -127,7 +127,7 @@ Open your browser and navigate to http://localhost:5000/admin to test your deplo
 
 *XDK Tip: check the Greetings Bot definition*
 
-> The deployed bot is defined in `xatkit-dev/build/examples/GreetingsBot`. It contains basic intents and execution rules to test that the installation is working. You can check the [tutorial](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Getting-Started) to learn how bots are defined with the Xatkit language, or if you are already familiar with it you can take a look at the [documentation](https://github.com/xatkit-bot-platform/xatkit-releases/wiki) for additional information on Xatkit capabilities.  
+> The deployed bot is defined in `xatkit-dev/build/examples/GreetingsBot`. It contains basic intents and execution rules to test that the installation is working. You can check the [tutorial](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Getting-Started) to learn how bots are defined with the Xatkit language, or if you are already familiar with it you can take a look at the [documentation](https://github.com/xatkit-bot-platform/xatkit-releases/wiki) for additional information on Xatkit capabilities. See also how to [use a real NLP such as DialogFlow](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Integrating-DialogFlow) instead of the default plain regular expressions based intent matching used in this test example. 
 
 ![Greetings Bot Chatbox](https://raw.githubusercontent.com/wiki/xatkit-bot-platform/xatkit-dev/img/greetings-bot-chatbox-example.png)
 
