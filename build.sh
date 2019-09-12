@@ -16,6 +16,8 @@
 # 			 			specified a zipped update-site is created in /update-site
 # --platforms: 			pull and build all the platforms listed in /src/platforms
 # --platform=<name>: 	pull and build the platform `name`. Note: `name` must be an existing directory in /src/platforms
+# --libraries:			pull and build all the libraries listed in /src/libraries
+# --library=<name>:		pull and build the library `name`. Note: `name` must be an existing directory in /src/libraries
 # --product:			bundle the generated artifacts into a shippable product in /build. If --eclipse is specified a
 #						zipped update-site is created in /update-site
 # --skip-tests:			skip the build tests (equivalent to -DskipTests parameter for maven)
@@ -56,6 +58,27 @@ build_platform() {
 	fi
 }
 
+build_library() {
+	library=$1
+	library_name=${library%"-library"}
+	cd $XATKIT_DEV/src/libraries/$library
+	echo "Pulling $library"
+	git pull
+
+	echo "Building $library"
+	if [ $skip_mvn = false ]
+	then
+		mvn clean install $mvn_options
+	fi
+	mvn_result=$?
+	if [ $build_product = true ]
+	then
+		echo "Copying created artifacts"
+		mkdir -p $XATKIT_DEV/build/plugins/libraries/$library
+		unzip target/$library_name-library*.zip -d $XATKIT_DEV/build/plugins/libraries/$library
+	fi
+}
+
 # Returns 0 if $2 contains $1, 1 otherwise
 containsElement () {
   local e match="$1"
@@ -78,7 +101,9 @@ build_product=false
 build_eclipse=false
 skip_mvn=false
 all_platforms=$(ls -d src/platforms/* | xargs -n 1 basename)
+all_libraries=$(ls -d src/libraries/* | xargs -n 1 basename)
 platforms_to_build=()
+libraries_to_build=()
 
 for arg in "$@"
 do
@@ -94,6 +119,16 @@ do
 								platforms_to_build=$platform
 							else
 								echo "Cannot build platform $platform, the directory src/platforms/$platform doesn't exist"
+								exit 1
+							fi;;
+		"--libraries")		libraries_to_build=$all_libraries;;
+		"--library="*)		library=${arg#*=}
+							containsElement $library ${all_libraries[@]}
+							if [ $? == 0 ]
+							then
+								libraries_to_build=$library
+							else
+								echo "Cannot build library $library, the directory src/library/$library doesn't exist"
 								exit 1
 							fi;;
 		"--skip-tests") 	mvn_options="$mvn_options -DskipTests" ;;
@@ -112,6 +147,11 @@ then
 	do
 		echo "Cleaning $platform"
 		rm -rf $XATKIT_DEV/build/plugins/platforms/$platform
+	done
+	for library in $libraries_to_build
+	do
+		echo "Cleaning $library"
+		rm -rf $XATKIT_DEV/build/plugins/libraries/$library
 	done
 	if [ $build_runtime = true ]
 	then
@@ -202,6 +242,16 @@ for concrete_platform in $concrete_platforms
 do
 	echo "Building concrete platform $concrete_platform"
 	build_platform $concrete_platform
+done
+
+cd $XATKIT_DEV/src/libraries
+
+echo "Building Xatkit libraries:"
+printf '\t%s\n' ${libraries_to_build[@]}
+for library in $libraries_to_build
+do
+	echo "Building library $library"
+	build_library $library
 done
 
 if [ $build_product = true ]
