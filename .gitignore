@@ -2,6 +2,7 @@ build/
 src/xatkit-runtime/
 src/xatkit-eclipse/
 src/platforms/
+src/libraries/
 src/xatkit-examples/
 update-site/
 *.log

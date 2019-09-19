@@ -52,13 +52,14 @@ This command will clone several Git repositories under the `xatkit-dev/src` dire
 - `src/xatkit-runtime`: the Xatkit execution engine
 - `src/xatkit-eclipse`: the Xatkit Eclipse-based editors
 - `src/platforms/*`: the Xatkit platforms bundled with the base distribution
+- `src/libraries/*`: the Xatkit libraries bundled with the base distribution
 
 Each Git repository contains a maven project that can be imported in your preferred IDE.
 
 4- Build Xatkit projects
 
 ```bash
-./build.sh --runtime --eclipse --platforms --skip-tests --product
+./build.sh --runtime --eclipse --platforms --libraries --skip-tests --product
 ```
 
 The `build.sh` command provides several options that allows to build part of Xatkit:
@@ -67,6 +68,8 @@ The `build.sh` command provides several options that allows to build part of Xat
 - `--eclipse`: build `xatkit-eclipse`
 - `--platforms`: build all the platforms located in `xatkit-dev/src/platforms` (including custom platforms created from scratch, and platforms not bundled with the base distribution)
 - `--platform=<platform directory name>`: build the `<platform directory name>` platform. The provided name must match exactly the name of the platform directory located in `xatkit-dev/src/platforms`
+- `--libraries`: build all the libraries located in `xatkit-dev/src/libraries` (including custom libraries created from scratch, and libraries not bundled with the base distribution)
+- `--library=<library directory name>`: build the `<library directory name>` library. The provided name must match exactly the name of the library directory located in `xatkit-dev/src/libraries`
 - `--skip-tests`: skip the test execution (similar to maven's `-DskipTests`)
 - `--product`: create a *product* version of the bundled artifacts. This option installs the built platforms in `xatkit-dev/build/plugins`, allowing the runtime component to use them. Installed platforms can also be imported in the Eclipse editors.
 

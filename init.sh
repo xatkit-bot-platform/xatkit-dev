@@ -1,6 +1,7 @@
 #!/bin/bash
 
 embedded_platforms=(xatkit-core xatkit-chat xatkit-slack xatkit-discord xatkit-react xatkit-giphy xatkit-github xatkit-log)
+embedded_libraries=(xatkit-core)
 xatkit_org=https://github.com/xatkit-bot-platform
 
 if [ -z "$XATKIT_DEV" ]
@@ -80,5 +81,20 @@ do
 		then
 			echo "Cannot clone $xatkit_org/$project_name.git"
 		fi
+	fi
+done
+
+mkdir -p $XATKIT_DEV/src/libraries
+
+cd $XATKIT_DEV/src/libraries
+
+for library in "${embedded_libraries[@]}"
+do
+	project_name="$library-library"
+	echo "Cloning $project_name"
+	git clone $xatkit_org/$project_name.git
+	if [ $? -ne 0 ]
+	then
+		echo "Cannot clone $xatkit_org/$project_name.git"
 	fi
 done
