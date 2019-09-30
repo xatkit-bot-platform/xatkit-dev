@@ -1,4 +1,5 @@
 build/
+src/xatkit-releases/
 src/xatkit-runtime/
 src/xatkit-eclipse/
 src/platforms/
