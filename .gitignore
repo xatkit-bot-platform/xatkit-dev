@@ -3,6 +3,7 @@ src/xatkit-runtime/
 src/xatkit-eclipse/
 src/platforms/
 src/libraries/
+src/xatkit-metamodels/
 src/xatkit-examples/
 update-site/
 *.log
