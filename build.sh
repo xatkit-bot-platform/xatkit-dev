@@ -11,6 +11,7 @@
 #
 # Options
 #
+# --metamodels: 		pull and build xatkit-metamodels (the xatkit metamodels used by the execution engine and the editors)
 # --runtime: 			pull and build xatkit-runtime (the xatkit execution engine)
 # --eclipse: 			pull and build xatkit-eclipse (the language editors and eclipse integration plugins). If --product is   
 # 			 			specified a zipped update-site is created in /update-site
@@ -96,6 +97,7 @@ fi
 cd $XATKIT_DEV
 
 mvn_options=""
+build_metamodels=false
 build_runtime=false
 build_product=false
 build_eclipse=false
@@ -109,6 +111,7 @@ for arg in "$@"
 do
 	shift
 	case "$arg" in
+		"--metamodels")		build_metamodels=true;;
 		"--runtime")		build_runtime=true;;
 		"--eclipse")		build_eclipse=true;;
 		"--platforms")		platforms_to_build=$all_platforms;;
@@ -175,6 +178,31 @@ fi
 
 cd $XATKIT_DEV
 
+# Install the top-level pom (always needs to be done)
+cd $XATKIT_DEV/src/xatkit-releases
+echo "Pulling Xatkit Releases"
+git pull
+echo "Building Xatkit Releases"
+if [ $skip_mvn = false ] 
+then
+	# Do not put the mvn options, they are not required here
+	mvn clean install
+fi
+
+
+if [ $build_metamodels = true ]
+then
+	cd $XATKIT_DEV/src/xatkit-metamodels
+
+	echo "Pulling Xatkit Metamodels"
+	git pull
+	echo "Building Xatkit Metamodels"
+	if [ $skip_mvn = false ] 
+	then
+		mvn clean install $mvn_options
+	fi
+	# Nothing to do related to product: xatkit-metamodels is bundled in xatkit-runtime.
+fi
 
 if [ $build_runtime = true ]
 then
