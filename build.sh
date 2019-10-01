@@ -10,7 +10,7 @@
 # stored in /build if the --product option is specified.
 #
 # Options
-#
+# -- all: 				builds all the xatkit components (similar to --metamodels --runtime --eclipse --platforms --libraries)
 # --metamodels: 		pull and build xatkit-metamodels (the xatkit metamodels used by the execution engine and the editors)
 # --runtime: 			pull and build xatkit-runtime (the xatkit execution engine)
 # --eclipse: 			pull and build xatkit-eclipse (the language editors and eclipse integration plugins). If --product is   
@@ -111,6 +111,11 @@ for arg in "$@"
 do
 	shift
 	case "$arg" in
+		"--all")			build_metamodels=true
+							build_runtime=true
+							build_eclipse=true
+							platforms_to_build=$all_platforms
+							libraries_to_build=$all_libraries;;
 		"--metamodels")		build_metamodels=true;;
 		"--runtime")		build_runtime=true;;
 		"--eclipse")		build_eclipse=true;;
