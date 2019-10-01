@@ -124,10 +124,15 @@ cd $XATKIT_DEV/src/libraries
 for library in "${embedded_libraries[@]}"
 do
 	project_name="$library-library"
-	echo "Cloning $project_name"
-	git clone $xatkit_org/$project_name.git
-	if [ $? -ne 0 ]
+	if [ -d $XATKIT_DEV/src/libraries/$project_name ]
 	then
-		echo "Cannot clone $xatkit_org/$project_name.git"
+		echo "Skipping initialization of $project_name, the directory already exists"
+	else
+		echo "Cloning $project_name"
+		git clone $xatkit_org/$project_name.git
+		if [ $? -ne 0 ]
+		then
+			echo "Cannot clone $xatkit_org/$project_name.git"
+		fi
 	fi
 done
