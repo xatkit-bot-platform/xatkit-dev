@@ -51,6 +51,7 @@ This command will clone several Git repositories under the `xatkit-dev/src` dire
 
 - `src/xatkit-runtime`: the Xatkit execution engine
 - `src/xatkit-eclipse`: the Xatkit Eclipse-based editors
+- `src/xatkit-metamodels/*`: the Xatkit base metamodels
 - `src/platforms/*`: the Xatkit platforms bundled with the base distribution
 - `src/libraries/*`: the Xatkit libraries bundled with the base distribution
 
@@ -59,11 +60,13 @@ Each Git repository contains a maven project that can be imported in your prefer
 4- Build Xatkit projects
 
 ```bash
-./build.sh --runtime --eclipse --platforms --libraries --skip-tests --product
+./build.sh --all --skip-tests --product
 ```
 
 The `build.sh` command provides several options that allows to build part of Xatkit:
 
+- `-- all`: builds all the xatkit components (similar to --metamodels --runtime --eclipse --platforms --libraries)
+- `--metamodels`:	pull and build xatkit-metamodels (the xatkit metamodels used by the execution engine and the editors)
 - `--runtime`: build `xatkit-runtime`
 - `--eclipse`: build `xatkit-eclipse`
 - `--platforms`: build all the platforms located in `xatkit-dev/src/platforms` (including custom platforms created from scratch, and platforms not bundled with the base distribution)
