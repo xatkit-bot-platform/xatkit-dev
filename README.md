@@ -75,6 +75,7 @@ The `build.sh` command provides several options that allows to build part of Xat
 - `--library=<library directory name>`: build the `<library directory name>` library. The provided name must match exactly the name of the library directory located in `xatkit-dev/src/libraries`
 - `--skip-tests`: skip the test execution (similar to maven's `-DskipTests`)
 - `--product`: create a *product* version of the bundled artifacts. This option installs the built platforms in `xatkit-dev/build/plugins`, allowing the runtime component to use them. Installed platforms can also be imported in the Eclipse editors.
+- `--skip-pull`: skip the git pull for all repositories during build
 
 *XDK Tip: rebuild single platforms*
 
