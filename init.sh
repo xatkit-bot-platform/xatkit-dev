@@ -1,6 +1,6 @@
 #!/bin/bash
 
-embedded_platforms=(xatkit-core xatkit-chat xatkit-slack xatkit-discord xatkit-react xatkit-giphy xatkit-github xatkit-log)
+embedded_platforms=(xatkit-core xatkit-chat xatkit-slack xatkit-discord xatkit-react xatkit-giphy xatkit-github xatkit-log xatkit-twitter xatkit-alexa xatkit-zapier)
 embedded_libraries=(xatkit-core)
 xatkit_org=https://github.com/xatkit-bot-platform
 
