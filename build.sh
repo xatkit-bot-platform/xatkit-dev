@@ -265,7 +265,7 @@ then
 	if [ $build_product = true ]
 	then
 		echo "Copying update site"
-		cp update/com.xatkit.update/target/com.xatkit.update-2.0.1-SNAPSHOT.zip $XATKIT_DEV/update-site/
+		cp update/com.xatkit.update/target/com.xatkit.update-2.1.1-SNAPSHOT.zip $XATKIT_DEV/update-site/
 	fi
 fi
 
