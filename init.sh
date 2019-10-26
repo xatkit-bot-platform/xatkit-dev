@@ -39,7 +39,7 @@ else
 	echo "Cloning Xatkit Metamodels"
 	git clone $xatkit_org/xatkit-metamodels.git
 
-	if [ $? -n 0 ]
+	if [ $? -ne 0 ]
 	then 
 		echo "Cannot clone $xatkit_org/xatkit-metamodels.git"
 		exit 1
