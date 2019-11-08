@@ -225,6 +225,29 @@ then
 	# Nothing to do related to product: xatkit-metamodels is bundled in xatkit-runtime.
 fi
 
+# Eclipse needs to be built before the runtime component to make sure it is built with the latest version
+# of the language parsers.
+if [ $build_eclipse = true ]
+then
+	cd $XATKIT_DEV/src/xatkit-eclipse
+	
+	if [ $skip_pull = false ] 
+	then
+		echo "Pulling Xatkit Eclipse Plugins"
+		git pull
+	fi
+	echo "Building Xatkit Eclipse Plugins"
+	if [ $skip_mvn = false ]
+	then
+		mvn clean install $mvn_options
+	fi
+	if [ $build_product = true ]
+	then
+		echo "Copying update site"
+		cp update/com.xatkit.update/target/com.xatkit.update-2.1.1-SNAPSHOT.zip $XATKIT_DEV/update-site/
+	fi
+fi
+
 if [ $build_runtime = true ]
 then
 	cd $XATKIT_DEV/src/xatkit-runtime
@@ -246,27 +269,6 @@ then
 	fi
 else
 	echo "Skipping Runtime build"
-fi
-
-if [ $build_eclipse = true ]
-then
-	cd $XATKIT_DEV/src/xatkit-eclipse
-	
-	if [ $skip_pull = false ] 
-	then
-		echo "Pulling Xatkit Eclipse Plugins"
-		git pull
-	fi
-	echo "Building Xatkit Eclipse Plugins"
-	if [ $skip_mvn = false ]
-	then
-		mvn clean install $mvn_options
-	fi
-	if [ $build_product = true ]
-	then
-		echo "Copying update site"
-		cp update/com.xatkit.update/target/com.xatkit.update-2.1.1-SNAPSHOT.zip $XATKIT_DEV/update-site/
-	fi
 fi
 
 cd $XATKIT_DEV/src/platforms
