@@ -8,7 +8,7 @@ The Xatkit Development Toolkit (XDK) aims to ease the installation and developme
 
 **All systems**
 
-- [JDK 8](https://www.java.com/en/download/). XDK requires a JDK to compile the different Xatkit components. Note that the Xatkit engine itself only requires a JRE to run and deploy bots.
+- [JDK 8](https://www.java.com/en/download/) (**exact version**). XDK requires a JDK to compile the different Xatkit components. Note that the Xatkit engine itself only requires a JRE to run and deploy bots.
 - Git
 - [Maven](https://maven.apache.org/)
 - *(Optional)* Eclipse Modeling Tools to install and edit Xatkit bots. Xatkit is developed on [Eclipse Modeling 4.11](https://www.eclipse.org/downloads/packages/release/2019-03/r/eclipse-modeling-tools).
@@ -31,17 +31,22 @@ git clone https://github.com/xatkit-bot-platform/xatkit-dev.git
 
 **Windows**
 
-Execute `xatkit-dev/install-windows.bat` with administrative rights.
+Enter `xatkit-dev` and execute the `xatkit-dev/install-windows.bat` file with administrative rights.
 
 **Ubuntu**
 
-Execute `xatkit-dev/install-linux.sh`
+Enter `xatkit-dev` and execute `xatkit-dev/install-linux.sh`, e.g. (note the dot `.` and the space before `install-linux.sh`):
+
+```bash
+cd xatkit-dev
+. install-linux.sh
+```
 
 *XDK Tip: check your environment variables on Windows*
 
 > Open your bash interpreter and check that `echo $XATKIT_DEV` prints the path of the `xatkit-dev` directory. If the printed value is empty you need to close your interpreter and open it again, the newly created environment variables will be reloaded.
 
-3- Navigate to the xatkit-dev folder and clone the Xatkit repositories
+3- Clone the Xatkit repositories by running the `init.sh` script
 
 ```bash
 ./init.sh
@@ -49,11 +54,11 @@ Execute `xatkit-dev/install-linux.sh`
 
 This command will clone several Git repositories under the `xatkit-dev/src` directory:
 
-- `src/xatkit-runtime`: the Xatkit execution engine
-- `src/xatkit-eclipse`: the Xatkit Eclipse-based editors
-- `src/xatkit-metamodels/*`: the Xatkit base metamodels
-- `src/platforms/*`: the Xatkit platforms bundled with the base distribution
-- `src/libraries/*`: the Xatkit libraries bundled with the base distribution
+- `xatkit-dev/src/xatkit-runtime`: the Xatkit execution engine
+- `xatkit-dev/src/xatkit-eclipse`: the Xatkit Eclipse-based editors
+- `xatkit-dev/src/xatkit-metamodels/*`: the Xatkit base metamodels
+- `xatkit-dev/src/platforms/*`: the Xatkit platforms bundled with the base distribution
+- `xatkit-dev/src/libraries/*`: the Xatkit libraries bundled with the base distribution
 
 Each Git repository contains a maven project that can be imported in your preferred IDE.
 
@@ -63,7 +68,7 @@ Each Git repository contains a maven project that can be imported in your prefer
 ./build.sh --all --skip-tests --product
 ```
 
-The `build.sh` command provides several options that allows to build part of Xatkit:
+The `xatkit-dev/build.sh` command provides several options that allows to build part of Xatkit:
 
 - `-- all`: builds all the xatkit components (similar to --metamodels --runtime --eclipse --platforms --libraries)
 - `--metamodels`:	pull and build xatkit-metamodels (the xatkit metamodels used by the execution engine and the editors)
@@ -79,7 +84,7 @@ The `build.sh` command provides several options that allows to build part of Xat
 
 *XDK Tip: rebuild single platforms*
 
->Rebuilding a single platform can be done with `./build.sh --platform=<platform directory name> --product`. Your `xatkit-dev/build` directory will be updated with the latest version of the built platform.
+>Rebuilding a single platform can be done with `./build.sh --platform=<platform directory name> --product`. Your `build` directory will be updated with the latest version of the built platform.
 
 After a few minutes, this command creates two directories:
 
@@ -92,11 +97,16 @@ Navigate to `xatkit-dev/build` and setup the environment variable for your local
 
 **Windows**
 
-Execute `install-windows.bat` with administrative rights.
+Execute `xatkit-install-windows.bat` with administrative rights.
 
 **Ubuntu**
 
-Execute `install-linux.sh`.
+Execute `. xatkit-install-linux.sh`, again note the dot and the space before the script file name:
+
+```
+cd build
+. xatkit-install-linux.sh
+```
 
 *XDK Tip: restart running Eclipse instances*
 
@@ -115,13 +125,15 @@ Congratulations! You have now performed all the steps to build your own Xatkit d
 **Windows**
 
 ```bash
-./start-xatkit-windows.sh ../examples/GreetingsBot/GreetingsBot.properties
+cd bin
+./start-xatkit-windows.sh ../examples/GreetingsBots/GreetingsBot/GreetingsBot.properties
 ```
 
 **Ubuntu**
 
 ```bash
-./start-xatkit-linux.sh ../examples/GreetingsBot/GreetingsBot.properties
+cd bin
+./start-xatkit-linux.sh ../examples/GreetingsBots/GreetingsBot/GreetingsBot.properties
 ```
 
 The console will log some initialization information, and after a few seconds you should see the following message:
@@ -134,9 +146,23 @@ Open your browser and navigate to http://localhost:5000/admin to test your deplo
 
 *XDK Tip: check the Greetings Bot definition*
 
-> The deployed bot is defined in `xatkit-dev/build/examples/GreetingsBot`. It contains basic intents and execution rules to test that the installation is working. You can check the [tutorial](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Getting-Started) to learn how bots are defined with the Xatkit language, or if you are already familiar with it you can take a look at the [documentation](https://github.com/xatkit-bot-platform/xatkit-releases/wiki) for additional information on Xatkit capabilities. See also how to [use a real NLP such as DialogFlow](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Integrating-DialogFlow) instead of the default plain regular expressions based intent matching used in this test example. 
+> The deployed bot is defined in `xatkit-dev/build/examples/GreetingsBots/GreetingsBot`. It contains basic intents and execution rules to test that the installation is working. You can check the [tutorial](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Getting-Started) to learn how bots are defined with the Xatkit language, or if you are already familiar with it you can take a look at the [documentation](https://github.com/xatkit-bot-platform/xatkit-releases/wiki) for additional information on Xatkit capabilities. See also how to [use a real NLP such as DialogFlow](https://github.com/xatkit-bot-platform/xatkit-releases/wiki/Integrating-DialogFlow) instead of the default plain regular expressions based intent matching used in this test example. 
 
 ![Greetings Bot Chatbox](https://raw.githubusercontent.com/wiki/xatkit-bot-platform/xatkit-dev/img/greetings-bot-chatbox-example.png)
 
+# TL;DR
 
+To deploy a Xatkit example server in Linux running in localhost, run the following commands:
+
+```bash
+git clone https://github.com/xatkit-bot-platform/xatkit-dev.git
+cd xatkit-dev
+. install-linux.sh
+./init.sh
+./build.sh --all --skip-tests --product
+. build/xatkit-install-linux.sh
+./build/bin/start-xatkit-linux.sh  build/examples/GreetingsBots/GreetingsBot/GreetingsBot.properties 
+```
+
+Open your browser and navigate to http://localhost:5000/admin to test your deployed chat bot!
 
