@@ -174,7 +174,7 @@ then
 	if [ $build_runtime = true ]
 	then
 		echo "Cleaning Runtime"
-		rm $XATKIT_DEV/build/bin/xatkit-nodep-jar-with-dependencies.jar
+		rm -f $XATKIT_DEV/build/bin/xatkit-nodep-jar-with-dependencies.jar
 	fi
 	if [ $build_eclipse = true ]
 	then
