@@ -12,6 +12,10 @@ The changelog format is based on [Keep a Changelog](https://keepachangelog.com/e
 
 - Eclipse plugins are now built before the runtime component. The runtime component now loads execution models using their `.execution` file. This implies to first build the eclipse plugins to  make sure that the latest versions of the parsers is used to resolve runtime's dependencies.
 
+### Fixed
+
+- `rm` error messages ([#8]( https://github.com/xatkit-bot-platform/xatkit-dev/issues/8 )) and `export` command not executed ([#10]( https://github.com/xatkit-bot-platform/xatkit-dev/issues/10 )) in *xatkit-install-linux.sh* (thanks [@abelgomez]( https://github.com/abelgomez) for your [pull request](https://github.com/xatkit-bot-platform/xatkit-dev/pull/11)!)
+
 ## [1.0.0] - 2019-10-09 
 
 See the release notes [here](https://github.com/xatkit-bot-platform/xatkit-dev/releases).
