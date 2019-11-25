@@ -6,7 +6,7 @@ runthis() {
 	eval $@
 }
 
-jars=$(find .. -follow \( -name '*.jar' \))
+jars=$(find $XATKIT -follow \( -name '*.jar' \))
 echo 'Xatkit classpath:'
 java_classpath=''
 for jar in $jars
