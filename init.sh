@@ -14,25 +14,25 @@ echo "Initializing Xatkit development environment at $XATKIT_DEV"
 
 cd $XATKIT_DEV
 
-if [ -d $XATKIT_DEV/src/xatkit-releases ]
+if [ -d $XATKIT_DEV/src/xatkit ]
 then
-	echo "Skipping initialization of Xatkit Releases, there is already a xatkit-releases directory in your development environment ($XATKIT_DEV/src/xatkit-releases)"
+	echo "Skipping initialization of Xatkit Parent, there is already a xatkit directory in your development environment ($XATKIT_DEV/src/xatkit)"
 else
 	cd $XATKIT_DEV/src
 
-	echo "Cloning Xatkit Releases"
-	git clone $xatkit_org/xatkit-releases.git
+	echo "Cloning Xatkit Parent"
+	git clone $xatkit_org/xatkit.git
 
 	if [ $? -ne 0 ]
 	then
-		echo "Cannot clone $xatkit_org/xatkit-releases.git"
+		echo "Cannot clone $xatkit_org/xatkit.git"
 		exit 1
 	fi
 fi
 
 if [ -d $XATKIT_DEV/src/xatkit-metamodels ]
 then
-	echo "Skipping initialization of Xatkit Metamodels, there is already a xatkit-releases directory in your development environment ($XATKIT_DEV/src/xatkit-metamodels)"
+	echo "Skipping initialization of Xatkit Metamodels, there is already a xatkit-metamodels directory in your development environment ($XATKIT_DEV/src/xatkit-metamodels)"
 else
 	cd $XATKIT_DEV/src
 
