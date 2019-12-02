@@ -194,13 +194,13 @@ fi
 cd $XATKIT_DEV
 
 # Install the top-level pom (always needs to be done)
-cd $XATKIT_DEV/src/xatkit-releases
+cd $XATKIT_DEV/src/xatkit
 if [ $skip_pull = false ] 
 then
-	echo "Pulling Xatkit Releases"
+	echo "Pulling Xatkit Parent"
 	git pull
 fi
-echo "Building Xatkit Releases"
+echo "Building Xatkit Parent"
 if [ $skip_mvn = false ] 
 then
 	# Do not put the mvn options, they are not required here
