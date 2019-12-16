@@ -1,4 +1,4 @@
-**Deprecated**: the XDK has been replaced by a dedicated build procedure detailed in [this article](https://github.com/xatkit-bot-platform/xatkit/wiki/Build-Xatkit)
+**Deprecated**: the XDK has been replaced by a dedicated build procedure detailed in [this article](https://github.com/xatkit-bot-platform/xatkit/wiki/Build-Xatkit). Developing with Xatkit is easier than ever with the IDE integrated in the main repository!
 
 To deploy the Xatkit *GreetingsBot* example in Linux running in localhost, run the following commands:
 
